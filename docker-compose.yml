@@ -1,0 +1,56 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: api-agenda-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: bd-agenda
+      MYSQL_USER: coti
+      MYSQL_PASSWORD: coti
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - api-agenda-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: api-agenda-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: coti
+      PMA_PASSWORD: coti
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "5054:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - phpmyadmin_data:/sessions
+    networks:
+      - api-agenda-network
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:80/" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+volumes:
+  mysql_data:
+  phpmyadmin_data:
+
+networks:
+  api-agenda-network:
+    driver: bridge

@@ -7,22 +7,19 @@ import jakarta.validation.constraints.Size;
 
 public record CriarUsuarioRequest(
 
-        @Size(min = 1, max = 100, message = "O nome deve conter no mínimo 1 caractere.")
-        @NotEmpty(message = "O nome é obrigatório.")
+        @Size(min = 8, message = "O nome do usuário deve ter pelo menos 8 caracteres.")
+        @NotEmpty(message = "O nome do usuário é obrigatório.")
         String nome,
 
-        @Email(message = "Informe um endereço de enail válido.")
-        @NotEmpty(message = "O email é obrigatório.")
+        @Email(message = "Informe um endereço de email válido.")
+        @NotEmpty(message = "O email do usuário é obrigatório.")
         String email,
 
         @Pattern(
-                regexp = "",
-                message = "A senha deve conter pelo menos 1 letra maiúscula, " +
-                        "1 letra minúscula, 1 número e 1 caractere especial."
+                regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+                message = "A senha deve ter pelo menos 1 letra minúscula, 1 letra maiúscula, 1 número, 1 caractere especial e no mínimo 8 caracteres."
         )
-        @NotEmpty(message = "A senha é obrigatória")
+        @NotEmpty(message = "A senha do usuário é obrigatória.")
         String senha
-
-
 ) {
 }

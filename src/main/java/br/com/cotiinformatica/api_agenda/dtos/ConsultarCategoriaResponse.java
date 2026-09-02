@@ -1,0 +1,7 @@
+package br.com.cotiinformatica.api_agenda.dtos;
+
+public record ConsultarCategoriaResponse(
+        Integer id,
+        String nome
+) {
+}

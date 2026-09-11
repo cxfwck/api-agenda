@@ -18,4 +18,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
 
 server:
-  port: 8082
+    port: 8082
+
+cors:
+    allowed-origins: http://localhost:4200
